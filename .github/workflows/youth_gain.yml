@@ -1,65 +1,49 @@
-# This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
-# 每日早9点到晚8点每2小时运行一次
-
-name: 中青看看赚
+name: 中青浏览
 
 on:
   workflow_dispatch:
   schedule:
-     - cron: '55 14 * * *'
+     - cron: '2 3 * * *'
   watch:
     types: started
+
 jobs:
   build:
     runs-on: ubuntu-latest
     if: github.event.repository.owner.id == github.event.sender.id
     env:
-      YOUTH_START: ${{ secrets.YOUTH_START }}
-      YOUTH_END: ${{ secrets.YOUTH_END }}
-      YOUTH_START2: ${{ secrets.YOUTH_START2 }}
-      YOUTH_END2: ${{ secrets.YOUTH_END2 }}
-      YOUTH_START3: ${{ secrets.YOUTH_START3 }}
-      YOUTH_END3: ${{ secrets.YOUTH_END3 }}
-      TZ: Asia/shanghai
+        YOUTH_START: ${{ secrets.YOUTH_START }}
+        YOUTH_LOOK: ${{ secrets.YOUTH_LOOK }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v1
+        uses: actions/checkout@v2
       - name: Use Node.js 12.x
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
       - name: npm install
+        if: env.YOUTH_START
         run: |
           npm install
-          
-      - name: '运行 【中青看看赚任务一】'
+      - name: '运行 【中青浏览】'
         if: env.YOUTH_START
         run: |
           node Task/youth_gain.js
         env:
-          YOUTH_START: ${{ secrets.YOUTH_START }}
-          YOUTH_ATIME: ${{ secrets.YOUTH_END }}
-
-      - name: '运行 【中青看看赚任务二】'
-        if: env.YOUTH_START2
-        run: |
-          node Task/youth_gain.js
-        env:
-          YOUTH_START: ${{ secrets.YOUTH_START2 }}
-          YOUTH_ATIME: ${{ secrets.YOUTH_END2 }}
-          
-      - name: '运行 【中青看看赚任务三】'
-        if: env.YOUTH_START3
-        run: |
-          node Task/youth_gain.js
-        env:
-          YOUTH_START: ${{ secrets.YOUTH_START3 }}
-          YOUTH_ATIME: ${{ secrets.YOUTH_END3 }}
-          
-      - name: '运行 【中青看看赚任务四】'
-        if: env.YOUTH_START4
-        run: |
-          node Task/youth_gain.js
-        env:
-          YOUTH_START: ${{ secrets.YOUTH_START4 }}
-          YOUTH_ATIME: ${{ secrets.YOUTH_END4 }}
+          YOUTH_NOTIFY_CONTROL: ${{ secrets.YOUTH_NOTIFY_CONTROL }}
+          TZ: Asia/shanghai
+          PUSH_KEY: ${{ secrets.PUSH_KEY}}
+          BARK_PUSH: ${{ secrets.BARK_PUSH}}
+          BARK_SOUND: ${{ secrets.BARK_SOUND}}
+          TG_BOT_TOKEN: ${{ secrets.TG_BOT_TOKEN}}
+          TG_USER_ID: ${{ secrets.TG_USER_ID}}
+          DD_BOT_TOKEN: ${{ secrets.DD_BOT_TOKEN}}
+          DD_BOT_SECRET: ${{ secrets.DD_BOT_SECRET}}
+          QYWX_KEY: ${{ secrets.QYWX_KEY}}
+          IGOT_PUSH_KEY: ${{ secrets.IGOT_PUSH_KEY}}
+          QQ_SKEY: ${{ secrets.QQ_SKEY}}
+          QQ_MODE: ${{ secrets.QQ_MODE}}
+          PUSH_PLUS_TOKEN: ${{ secrets.PUSH_PLUS_TOKEN}}
+          PUSH_PLUS_USER: ${{ secrets.PUSH_PLUS_USER}}
+          TG_PROXY_HOST: ${{ secrets.TG_PROXY_HOST}}
+          TG_PROXY_PORT: ${{ secrets.TG_PROXY_PORT}}
